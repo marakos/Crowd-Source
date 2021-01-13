@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Web</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <!--     Fonts and icons     -->
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
+    <!-- CSS Files -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/assets/css/light-bootstrap-dashboard.css?v=2.0.0 " rel="stylesheet" />
+</head>
+
+<body>
+<div class="wrapper">
+    <div class="sidebar" data-color="blue" data-image="/assets/img/sidebar-5.jpg">
+        <div class="sidebar-wrapper">
+            <ul class="nav">
+                <li >
+                    <a class="nav-link" href="/dashboard">
+                        <i class="nc-icon nc-chart-pie-35"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link" href="/userstats">
+                        <i class="nc-icon nc-notes"></i>
+                        <p>User Stats</p>
+                    </a>
+                </li>
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="/upload">
+                        <i class="nc-icon nc-bell-55"></i>
+                        <p>Upload Data</p>
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link" href="/logout" target="_self">
+                        <i class="nc-icon nc-button-power"></i>
+                        <p>Log out</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="main-panel">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg " color-on-scroll="500">
+            <div class="container-fluid">
+
+                <div class="navbar-brand">
+                    <div class="Template"></div>
+                    <h7>Upload Data</h7>
+
+                </div>
+
+                <button href="" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-bar burger-lines"></span>
+                    <span class="navbar-toggler-bar burger-lines"></span>
+                    <span class="navbar-toggler-bar burger-lines"></span>
+                </button>
+            </div>
+        </nav>
+            <!-- End Navbar -->
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="card">
+                        <div class="card-header">
+
+                            <%- include('partials/messages'); %>
+                            <h4  class="card-title">1. Επιλέξτε το αρχείο .json σας που επιθυμείτε να ανεβάσετε.</h4>
+                            <form action="/uploadFile" enctype="multipart/form-data" method="post">
+                                <input type="file" accept=".json" id="fileup" name="file">
+                                <input type="submit"  value="Upload"  onclick='return show_confirm();'/>
+
+                            </form>
+                            <h4 >2. Επιλέξτε περιοχές στον χάρτη που δεν θέλετε να συμπεριλάβετε.</h4>
+
+                            <div id="map"></div><br>
+                            <div class="col-md-12 text-center">
+                            <form action="/uploadFileExclude" method="post">
+                                <h5> <%= Array[0]%></h5>
+                                <button name="passdata" class="button button2"  id="buttonValue" onclick='return show_confirm2();' value="">Αφαίρεση Επιλεγμένης Περιοχής</button>
+                            </form>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <h4 class="title">3.Ανέβασμα Δεδομένων στην βάση</h4>
+                                    <form action="/uploadFileDB" method="post">
+                                    <button class="button button2" onclick='return show_confirm();'>Οριστική Υποβολή</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+<script type="text/javascript">
+    function show_confirm()
+    {
+        var r=confirm("Do you wish to upload the file");
+        return r === true;
+    }
+    function show_confirm2()
+    {
+        var r=confirm("Do you wish to exclude area from data ?");
+        return r === true;
+    }
+</script>
+<script>
+    var marker;
+    var rectangle;
+    var map;
+    var infoWindow;
+    var heatmap;
+    const cords = "<%= data %>".split(',');
+   // alert(cords.length)
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: 38.230462, lng: 21.753150},
+            zoom: 12
+        });
+
+        marker = new google.maps.Marker({
+            position: {lat: 38.230462, lng: 21.753150},
+            map: map,
+            title: 'Patras,Greece!'
+        });
+        if (cords.length !== 1) {
+            let heatmapData = [];
+            for (let i = 0; i < cords.length; i+=2) {
+                const gData= new google.maps.LatLng(cords[i], cords[i+1]);
+                heatmapData.push(gData);
+            }
+
+            var heatmap = new google.maps.visualization.HeatmapLayer({
+                data: heatmapData
+            });
+            heatmap.setMap(map);
+        }
+        var bounds = {
+            north: 38.23784304275028,
+            south: 38.2226621133451,
+            east: 21.76408550865677,
+            west: 21.741203135121626
+        };
+        // Define the rectangle and set its editable property to true.
+        rectangle = new google.maps.Rectangle({
+            bounds: bounds,
+            editable: true,
+            draggable: true
+        });
+
+        rectangle.setMap(map);
+
+        // Add an event listener on the rectangle.
+        rectangle.addListener('bounds_changed', showNewRect);
+
+        // Define an info window on the map.
+        infoWindow = new google.maps.InfoWindow();
+    }
+    // Show the new coordinates for the rectangle in an info window.
+
+    /** @this {google.maps.Rectangle} */
+    function showNewRect(event) {
+        var ne = rectangle.getBounds().getNorthEast();
+        var sw = rectangle.getBounds().getSouthWest();
+
+        var contentString = '<b>Rectangle moved.</b><br>' +
+            'New north-east corner: ' + ne.lat() + ', ' + ne.lng() + '<br>' +
+            'New south-west corner: ' + sw.lat() + ', ' + sw.lng();
+
+        let Array=[ne.lat(),ne.lng(),sw.lat(),sw.lng()];
+
+            document.getElementById("buttonValue").value = Array;
+
+        // Set the info window's content and position.
+        infoWindow.setContent(contentString);
+        infoWindow.setPosition(ne);
+        infoWindow.open(map);
+    }
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRDKnO3ejFtTNafaTmq7EDs_RnRpNrBZQ&callback=initMap&libraries=visualization">
+</script>
+
+<!--   Core JS Files   -->
+<script src="../assets/js/core/jquery.3.2.1.min.js" type="text/javascript"></script>
+<script src="../assets/js/core/popper.min.js" type="text/javascript"></script>
+<script src="../assets/js/core/bootstrap.min.js" type="text/javascript"></script>
+<!--  Plugin for Switches -->
+<script src="../assets/js/plugins/bootstrap-switch.js"></script>
+<!-- Control Center for Light Bootstrap Dashboard: scripts for the example pages etc -->
+<script src="../assets/js/light-bootstrap-dashboard.js?v=2.0.0 " type="text/javascript"></script>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Web</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <!--     Fonts and icons     -->
+    <!-- CSS Files -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/assets/css/light-bootstrap-dashboard.css?v=2.0.0 " rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js
+"></script>
+
+</head>
+
+<body>
+<div class="wrapper">
+    <div class="sidebar" data-color="blue" data-image="/assets/img/sidebar-5.jpg">
+           <div class="sidebar-wrapper">
+            <ul class="nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="javascript:window.location.href=window.location.href">
+                        <i class="nc-icon nc-chart-pie-35"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link" href="/userstats">
+                        <i class="nc-icon nc-notes"></i>
+                        <p>User Stats</p>
+                    </a>
+                </li>
+
+                <li>
+                    <a class="nav-link" href="/upload">
+                        <i class="nc-icon nc-bell-55"></i>
+                        <p>Upload Data</p>
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link" href="/logout" target="_self">
+                        <i class="nc-icon nc-button-power"></i>
+                        <p>Log out</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="main-panel">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg " color-on-scroll="500">
+            <div class="container-fluid">
+
+                <div class="navbar-brand">
+                    <h7><%= user.firstName %>  <%= user.lastName %> </h7>
+                    <input id="userIdValue" name="userIdValue" hidden value="<%= user.user_id %>">
+                    <a href="javascript:window.location.href=window.location.href">
+
+                    </a>
+
+                </div>
+                <button href="" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-bar burger-lines"></span>
+                    <span class="navbar-toggler-bar burger-lines"></span>
+                    <span class="navbar-toggler-bar burger-lines"></span>
+                </button>
+            </div>
+        </nav>
+        <!-- End Navbar -->
+        <div class="content">
+            <div class="container-fluid">
+                <%- include('partials/messages'); %>
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="card ">
+                            <div class="card-header ">
+
+                                <h4 class="card-title"> Score οικολογικής μετακίνησης χρήστη</h4>
+
+                                <p class="card-category">Ποσοστό τοποθεσιών με δραστηριότητα
+                                    σώματος</p>
+
+                            </div>
+                            <div class="card-body " style="margin-bottom: 2px">
+                                <div class="countPercentage" style="text-align:center;font-size: 25px"><span>0</span>% Για τον τρέχοντα μήνα</div>
+
+                                <!-- CHART ΓΡΑΦΗΜΑ-->
+                                <div id="chartActivity" class="ct-chart"></div>
+                                <!-- CHART ΓΡΑΦΗΜΑ-->
+
+                                <hr>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 " >
+                        <div class="card " style="max-height: 494px;">
+                            <div class="card-header ">
+                            <h4 class="card-title">Στοιχεία χρήστη</h4>
+                            <p class="card-category">Ημερομηνία εγγραφών</p>
+                        </div>
+                                <div class="card-body">
+                                    <h3 class="far fa-calendar-check"> Τελευταίο upload:</h3>
+                                    <div id="getResultDiv" class="col-md-16 text-left">
+                                    </div>
+                                    <h3 class="far fa-calendar-check"> Πρώτη εγγραφή:</h3>
+                                    <div id="getResultDiv2" class="col-md-16 text-left">
+                                    </div>
+                                    <h3 class="far fa-calendar-check"> Τελευταία εγγραφή:</h3>
+                                    <div id="getResultDiv3" class="col-md-16 text-left">
+                                    </div>
+                                    <h3 class="far fa-calendar-check"> Διάρκεια περιόδου:</h3>
+                                    <div id="getResultDiv4" class="col-md-16 text-left">
+                                    </div>
+                                </div>
+                                 <hr>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card striped-tabled-with-hover">
+                            <div class="card-header "style="padding-bottom: 0;">
+                                <h4 class="card-title" style="text-align: center">Leaderboard</h4>
+                            </div>
+                            <div class="card-header table-full-width table-responsive" style="padding-bottom: 0;">
+                                <table  name="userTable" id="userTable"class="table table-hover table-striped" style="text-align: center">
+                                    <thead>
+                                    <tr>
+                                        <td style="text-align:center;"><b>Θέση No.</b></td>
+                                        <td style="text-align:center;"><b>Όνομα Χρήστη</b></td>
+                                        <td style="text-align:center;"><b>Ποσοστό</b></td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<!--   Core JS Files   -->
+<script src="/assets/js/core/popper.min.js" type="text/javascript"></script>
+<script src="/assets/js/core/bootstrap.min.js" type="text/javascript"></script>
+<script src="/assets/js/plugins/bootstrap-switch.js"></script>
+<script src="/assets/js/light-bootstrap-dashboard.js?v=2.0.0 " type="text/javascript"></script>
+<script src="../assets/js/plugins/chartist.min.js"></script>
+<script type="text/javascript" defer src="/scripts/calls.js"></script>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!--     Fonts and icons     -->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
+  <!-- CSS Files -->
+  <link href="/assets/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="/assets/css/light-bootstrap-dashboard.css?v=2.0.0 " rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js
+"></script>
+</head>
+<body>
+<div class="row mt-5" style="display: inline">
+  <div class="col-md-6 m-auto">
+    <div class="card card-body">
+      <h1 class="text-center mb-3">
+        <i class="fas fa-user-plus"></i> Register
+      </h1>
+      <%- include('partials/messages'); %>
+      <form action="/users/register" method="POST">
+        <div class="form-group">
+          <label for="username">Userame</label>
+          <input
+            type="text"
+            id="username"
+            onkeypress="return AvoidSpace(event)"
+            name="username"
+            class="form-control"
+            placeholder="Enter Username"
+            autocomplete="username"
+            value="<%= typeof name != 'undefined' ? name : '' %>"
+          />
+        </div>
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input
+                  type="text"
+                  id="firstName"
+                  onkeypress="return AvoidSpace(event)"
+                  name="firstName"
+                  class="form-control"
+                  placeholder="Enter First Name"
+                  value="<%= typeof name != 'undefined' ? name : '' %>"
+          />
+        </div>
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input
+                  type="text"
+                  id="lastName"
+                  onkeypress="return AvoidSpace(event)"
+                  name="lastName"
+                  class="form-control"
+                  placeholder="Enter Last Name"
+                  value="<%= typeof name != 'undefined' ? name : '' %>"
+          />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            onkeypress="return AvoidSpace(event)"
+            name="email"
+            class="form-control"
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+            placeholder="Enter Email"
+            autocomplete="email"
+            value="<%= typeof email != 'undefined' ? email : '' %>"
+          />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            onkeypress="return AvoidSpace(event)"
+            name="password"
+            class="form-control"
+            placeholder="Create Password"
+            autocomplete="new-password"
+            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Το password πρέπει να είναι τουλάχιστον 8 χαρακτήρες και να περιέχει τουλάχιστον ένα κεφαλαίο γράμμα, ένα αριθμό και κάποιο σύμβολο (π.χ. #$*&@)." required
+            value="<%= typeof password != 'undefined' ? password : '' %>"
+          />
+        </div>
+        <div class="form-group">
+          <label for="password2">Confirm Password</label>
+          <input
+            type="password"
+            id="password2"
+            onkeypress="return AvoidSpace(event)"
+            name="password2"
+            class="form-control"
+            placeholder="Confirm Password"
+            autocomplete="new-password"
+            value="<%= typeof password2 != 'undefined' ? password2 : '' %>"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">
+          Register
+        </button>
+      </form>
+      <p class="lead mt-4">Have An Account? <a href="/users/login">Login</a></p>
+    </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+  function AvoidSpace(event) {
+    var k = event ? event.which : window.event.keyCode;
+    if (k == 32) return false;
+  }
+
+</script>
+</html>

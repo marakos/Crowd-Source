@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <title>Web</title>
+        <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+        <!--     Fonts and icons     -->
+
+        <!-- CSS Files -->
+        <link href="/assets/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="/assets/css/light-bootstrap-dashboard.css?v=2.0.0 " rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js
+"></script>
+
+
+    <style>
+        .image_pos
+        {
+            align-self: center;
+        }
+        </style>
+</head>
+<body>
+<div class="row mt-5" style="display: inline">
+    <div class="col-md-6 m-auto">
+        <div class="card card-body text-center">
+            <%- include('partials/messages'); %>
+            <img class="image_pos" src="./assets/img/unnamed.png" width="200px"  align="center" >
+            <p>Welcome</p>
+            <a href="/admin/adminlogin" class="btn btn-primary btn-block mb-2">Continue as Admin</a>
+            <a class="btn btn-secondary btn-block" href="/users/login">Continue as User</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
